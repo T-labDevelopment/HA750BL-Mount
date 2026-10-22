@@ -30,6 +30,13 @@ jobs:
         run: python -m pip install 'trimesh>=4,<5' 'numpy>=1.26,<3' 'networkx>=3,<5'
       - name: Build Rev.A reference meshes
         run: bash tools/export_stl.sh 32
+      - name: Build Rev.A reference preview
+        run: |
+          mkdir -p images
+          xvfb-run -a openscad -o images/assembly_pole32.png \
+            --imgsize=1200,900 --colorscheme=Tomorrow --viewall --autocenter \
+            --camera=0,0,0,65,0,40,480 \
+            -D 'part="assembly"' -D 'pole_diameter=32' cad/HA750BL_dual_clamp.scad
       - name: Build Rev.B meshes and assembly image
         run: bash tools/export_revB.sh
       - name: Validate generated Rev.B STL files
