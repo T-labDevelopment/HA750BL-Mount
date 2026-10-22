@@ -1,0 +1,4 @@
+# generated slicer data
+*.gcode
+*.gcode.3mf
+*.bak
