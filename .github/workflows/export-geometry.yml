@@ -50,5 +50,7 @@ jobs:
             echo "Generated artifacts are already current"
           else
             git commit -m 'build: refresh generated STL and assembly images'
-            git push
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
           fi
