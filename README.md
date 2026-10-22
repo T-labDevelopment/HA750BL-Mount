@@ -15,7 +15,19 @@
 - `VALIDATION.md` — 実施済みの確認と未検証事項
 - `CHANGELOG.md` — 設計変更履歴
 
-STL・組立画像はパラメトリックCADから生成する派生データ。未登録の場合はソースから再生成する。
+## 生成済みSTL・組立画像
+
+- [Rev.B フレーム（印刷用）](stl/HA750BL_RevB_frame_print.stl)
+- [Rev.B 下部押さえ（印刷用）](stl/HA750BL_RevB_lower_cap_print.stl)
+- [Rev.B フレーム（設計座標）](stl/HA750BL_RevB_frame.stl)
+- [Rev.B 下部押さえ（設計座標）](stl/HA750BL_RevB_lower_cap.stl)
+- [Rev.B 組立画像](images/HA750BL_RevB_assembly.png)
+- [旧Rev.AのSTL一覧](stl/)
+- [旧Rev.Aの設計説明](docs/README_RevA.md)
+
+GitHub ActionsによりCAD更新時にSTL・画像を生成・検証してコミットする。ワークフロー：[export-geometry.yml](.github/workflows/export-geometry.yml)。
+
+ローカルでの再生成：OpenSCADとPython（trimesh、networkx、numpy）が必要。ルートディレクトリから `bash tools/export_revB.sh`、`python tools/validate_revB.py` を実行。Windowsの場合はOpenSCADのGUIで `part="frame_print"` / `part="lower_cap_print"` を選んでSTLを出力できる。
 
 ## Rev.B 初期パラメータ（mm）
 
