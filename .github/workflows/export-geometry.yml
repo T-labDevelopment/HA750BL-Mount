@@ -1,0 +1,47 @@
+name: Export OpenSCAD STL and previews
+
+on:
+  push:
+    paths:
+      - 'cad/**'
+      - 'tools/**'
+      - '.github/workflows/export-geometry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install OpenSCAD and headless renderer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openscad xvfb
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install mesh checker
+        run: python -m pip install 'trimesh>=4,<5' 'numpy>=1.26,<3'
+      - name: Build Rev.A reference meshes
+        run: bash tools/export_stl.sh 32
+      - name: Build Rev.B meshes and assembly image
+        run: bash tools/export_revB.sh
+      - name: Validate generated Rev.B STL files
+        run: python tools/validate_revB.py
+      - name: Commit generated STL and PNG
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add stl/ images/
+          if git diff --cached --quiet; then
+            echo "Generated artifacts are already current"
+          else
+            git commit -m 'build: refresh generated STL and assembly images'
+            git push
+          fi
