@@ -41,6 +41,8 @@ jobs:
         run: bash tools/export_revB.sh
       - name: Validate generated Rev.B STL files
         run: python tools/validate_revB.py
+      - name: Build Rev.C modular holder meshes and assembly
+        run: bash tools/export_revC.sh
       - name: Commit generated STL and PNG
         run: |
           git config user.name 'github-actions[bot]'
